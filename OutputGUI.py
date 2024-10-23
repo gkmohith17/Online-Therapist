@@ -59,50 +59,110 @@ def show_second_screen():
     clear_window()
     global bg_image
 
-    second_frame = Frame(root, bg='black')
+    second_frame = Frame(root)
     second_frame.pack(expand=True, fill='both')
 
-    bg_image = PhotoImage(file="background.png") 
+    # Set up background image
+    bg_image = PhotoImage(file="background.png")  
     bg_label = tk.Label(second_frame, image=bg_image)
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-    scrollbar = tk.Scrollbar(second_frame)
-    scrollbar.pack(side="right", fill="y")
+    # Form Title
+    Label(second_frame, text="User Information Form", font=("Arial", 18, 'bold')).grid(row=0, column=0, columnspan=2, pady=20)
 
-    terms_text = tk.Text(second_frame, wrap="word", yscrollcommand=scrollbar.set, font=("Helvetica", 12), bg="white")
-    terms_text.pack(pady=10, padx=10, fill="both", expand=True)
+    # Age
+    Label(second_frame, text="Age:", font=("Arial", 14)).grid(row=1, column=0, sticky="e", padx=10, pady=5)
+    age_spinbox = tk.Spinbox(second_frame, from_=0, to=120, font=("Arial", 14), width=10)
+    age_spinbox.grid(row=1, column=1, padx=10, pady=5)
 
-    scrollbar.config(command=terms_text.yview)
+    # Gender
+    Label(second_frame, text="Gender:", font=("Arial", 14)).grid(row=2, column=0, sticky="e", padx=10, pady=5)
+    gender_var = tk.StringVar()
+    gender_frame = Frame(second_frame)
+    gender_frame.grid(row=2, column=1, padx=10, pady=5)
+    tk.Radiobutton(gender_frame, text="Male", variable=gender_var, value="Male", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(gender_frame, text="Female", variable=gender_var, value="Female", font=("Arial", 14)).pack(side="left", padx=5)
 
-    terms_content = """
-    Welcome to the Online Therapist platform. By using this application, you agree to the following terms and conditions:
+    # Marital Status
+    Label(second_frame, text="Marital Status:", font=("Arial", 14)).grid(row=3, column=0, sticky="e", padx=10, pady=5)
+    marital_status_var = tk.StringVar()
+    marital_frame = Frame(second_frame)
+    marital_frame.grid(row=3, column=1, padx=10, pady=5)
+    tk.Radiobutton(marital_frame, text="Married", variable=marital_status_var, value="Married", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(marital_frame, text="Unmarried", variable=marital_status_var, value="Unmarried", font=("Arial", 14)).pack(side="left", padx=5)
 
-    1. **Use of Webcam**: 
-       - The Online Therapist application will access your device's webcam to detect facial expressions and predict emotional states using advanced facial recognition technology.
-       - The webcam data is processed in real-time and is not stored unless explicit consent is provided by the user.
+    # Occupation
+    Label(second_frame, text="Occupation:", font=("Arial", 14)).grid(row=4, column=0, sticky="e", padx=10, pady=5)
+    occupation_entry = tk.Entry(second_frame, font=("Arial", 14))
+    occupation_entry.grid(row=4, column=1, padx=10, pady=5)
 
-    2. **Personal Information**:
-       - We collect personal information such as name, email, and emotional feedback to enhance the user experience.
-       - This data is confidential and will only be used to provide personalized therapy recommendations.
-       - Your data will not be shared with third parties without your consent, except as required by law.
+    # Physical Health
+    Label(second_frame, text="Physical Health:", font=("Arial", 14)).grid(row=5, column=0, sticky="e", padx=10, pady=5)
+    physical_health_var = tk.StringVar()
+    health_frame = Frame(second_frame)
+    health_frame.grid(row=5, column=1, padx=10, pady=5)
+    tk.Radiobutton(health_frame, text="Good", variable=physical_health_var, value="Good", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(health_frame, text="Average", variable=physical_health_var, value="Average", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(health_frame, text="Bad", variable=physical_health_var, value="Bad", font=("Arial", 14)).pack(side="left", padx=5)
 
-    3. **Security**:
-       - We take the security of your personal information seriously and implement various security measures to protect your data.
+    # Trauma History
+    Label(second_frame, text="Trauma History:", font=("Arial", 14)).grid(row=6, column=0, sticky="e", padx=10, pady=5)
+    trauma_var = tk.StringVar()
+    trauma_frame = Frame(second_frame)
+    trauma_frame.grid(row=6, column=1, padx=10, pady=5)
+    tk.Radiobutton(trauma_frame, text="Yes", variable=trauma_var, value="Yes", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(trauma_frame, text="No", variable=trauma_var, value="No", font=("Arial", 14)).pack(side="left", padx=5)
 
-    4. **Consent**:
-       - By using this application, you consent to the collection and use of your personal information and webcam data as described in this agreement.
-       - You may revoke consent at any time by contacting support, but certain features may become unavailable.
+    # Sleep Pattern
+    Label(second_frame, text="Sleep Pattern:", font=("Arial", 14)).grid(row=7, column=0, sticky="e", padx=10, pady=5)
+    sleep_pattern_var = tk.StringVar()
+    sleep_frame = Frame(second_frame)
+    sleep_frame.grid(row=7, column=1, padx=10, pady=5)
+    tk.Radiobutton(sleep_frame, text="Regular", variable=sleep_pattern_var, value="Regular", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(sleep_frame, text="Irregular", variable=sleep_pattern_var, value="Irregular", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(sleep_frame, text="Disturbed", variable=sleep_pattern_var, value="Disturbed", font=("Arial", 14)).pack(side="left", padx=5)
 
-    5. **Privacy Policy**:
-       - For more information on how we handle your data, please refer to our Privacy Policy available on our website.
+    # Stress Level
+    Label(second_frame, text="Stress Level:", font=("Arial", 14)).grid(row=8, column=0, sticky="e", padx=10, pady=5)
+    stress_level_var = tk.StringVar()
+    stress_frame = Frame(second_frame)
+    stress_frame.grid(row=8, column=1, padx=10, pady=5)
+    tk.Radiobutton(stress_frame, text="Low", variable=stress_level_var, value="Low", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(stress_frame, text="Average", variable=stress_level_var, value="Average", font=("Arial", 14)).pack(side="left", padx=5)
+    tk.Radiobutton(stress_frame, text="High", variable=stress_level_var, value="High", font=("Arial", 14)).pack(side="left", padx=5)
 
-    Please read these terms carefully and click 'Agree' if you consent to the use of your personal data and webcam as described.
-    """
+    def submit_form():
+        global user_inputs
+        user_inputs = {
+            "Age": age_spinbox.get(),
+            "Gender": gender_var.get(),
+            "Marital Status": marital_status_var.get(),
+            "Occupation": occupation_entry.get(),
+            "Physical Health": physical_health_var.get(),
+            "Trauma History": trauma_var.get(),
+            "Sleep Pattern": sleep_pattern_var.get(),
+            "Stress Level": stress_level_var.get()
+        }
+        show_main_screen()
 
-    terms_text.insert(tk.END, terms_content)
+    # Submit Button
+    Button(second_frame, text="Submit", font=("Arial", 18, 'bold'), bg='#ffffff', fg='black', command=submit_form).grid(row=9, column=0, columnspan=2, pady=20)
 
-    terms_text.config(state="disabled")
-    Button(second_frame, text="Continue", font=("Arial", 18, 'bold'), bg='#ffffff', fg='black', command=show_main_screen, padx=20, pady=10).pack(side='bottom', pady=40)
+    def submit_form():
+        global user_inputs
+        user_inputs = {
+            "Age": age_spinbox.get(),
+            "Gender": gender_var.get(),
+            "Marital Status": marital_status_var.get(),
+            "Occupation": occupation_entry.get(),
+            "Physical Health": physical_health_var.get(),
+            "Trauma History": trauma_var.get(),
+            "Sleep Pattern": sleep_pattern_var.get(),
+            "Stress Level": stress_level_var.get()
+        }
+        show_main_screen()
+
+    Button(second_frame, text="Submit", font=("Arial", 18, 'bold'), bg='#ffffff', fg='black', command=submit_form).pack(pady=20)
 
 
 def show_main_screen():
@@ -227,8 +287,10 @@ def show_response_screen(text_emotion):
     Label(response_frame, text=f"Text Emotion: {text_emotion}", font=("Arial", 18), fg='white', bg='black').pack(pady=20)
 
     try:
+        # Send user inputs along with emotions
         result = subprocess.check_output(
-            ["python", "Finalresponses.py", text_emotion, detected_facial_emotion],
+            ["python", "FinalResponses.py", text_emotion, detected_facial_emotion] + 
+            [str(value) for value in user_inputs.values()],
             universal_newlines=True
         ).strip()
 
