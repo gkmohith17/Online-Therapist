@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 from keras.models import model_from_json
 import numpy as np
 import subprocess
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import pipeline
 
 json_file = open("./Models/Faceemotiondetector.json", "r")
 model_json = json_file.read()
@@ -25,6 +27,9 @@ cap = None
 response_label = None
 detected_facial_emotion = None
 bg_image=None
+
+tokenizer = AutoTokenizer.from_pretrained("Issactoto/therapist")
+model = AutoModelForCausalLM.from_pretrained("Issactoto/therapist")
 
 def on_enter(e):
     start_button['background'] = 'black'  
@@ -262,12 +267,22 @@ def show_text_input_screen():
 def process_text_emotion(text):
     if text:
         try:
-            detected_text_emotion = subprocess.check_output(
-                ["python", "hick.py", text],
-                universal_newlines=True
-            ).strip()  
+            messages = [
+            {"role": "user", "content": text+" and I feel {detected_facial_emotion}"},
+            ]
+            pipe = pipeline("text-generation", model="Issactoto/therapist")
+            output= pipe(messages[0]['content'])
+            clear_window()
+            global bg_image
+            response_frame = Frame(root, bg='black')
+            response_frame.pack(expand=True, fill='both')
 
-            show_response_screen(detected_text_emotion)
+            bg_image = PhotoImage(file="background.png")  
+            bg_label = tk.Label(response_frame, image=bg_image)
+            bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+            Label(response_frame, text=f"Response: {output}", font=("Arial", 18), fg='white', bg='black', wraplength=600).pack(pady=20)
+
+
         except subprocess.CalledProcessError as e:
             messagebox.showerror("Error", f"Error detecting text emotion: {e}")
     else:
@@ -286,6 +301,12 @@ def show_response_screen(text_emotion):
     Label(response_frame, text=f"Facial Emotion: {detected_facial_emotion}", font=("Arial", 18), fg='white', bg='black').pack(pady=20)
     Label(response_frame, text=f"Text Emotion: {text_emotion}", font=("Arial", 18), fg='white', bg='black').pack(pady=20)
 
+    messages = [
+    {"role": "user", "content": "my dog died, and i feel surprised"},
+    ]
+    pipe = pipeline("text-generation", model="Issactoto/therapist")
+    pipe(messages[0]['content'])
+
     try:
         # Send user inputs along with emotions
         result = subprocess.check_output(
@@ -299,6 +320,9 @@ def show_response_screen(text_emotion):
         messagebox.showerror("Error", f"Error getting response: {e}")
 
     Button(response_frame, text="Exit", font=("Arial", 18, 'bold'), bg='#ffffff', fg='black', command=root.quit).pack(side='bottom', pady=20)
+
+
+
 
 show_startup_screen()
 
