@@ -268,7 +268,7 @@ def process_text_emotion(text):
     if text:
         try:
             messages = [
-            {"role": "user", "content": text+" and I feel"+ detected_facial_emotion},
+            {"role": "user", "content": text+" and I feel sad"},
             ]
             pipe = pipeline("text-generation", model="Issactoto/therapist")
             output= pipe(messages[0]['content'])    
@@ -280,7 +280,7 @@ def process_text_emotion(text):
             bg_image = PhotoImage(file="background.png")  
             bg_label = tk.Label(response_frame, image=bg_image)
             bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-            Label(response_frame, text=f"Response: {output}", font=("Arial", 18), fg='white', bg='black', wraplength=600).pack(pady=20)
+            Label(response_frame, text=f"Response:"+output, font=("Arial", 18), fg='white', bg='black', wraplength=600).pack(pady=20)
 
 
         except subprocess.CalledProcessError as e:
@@ -304,7 +304,7 @@ def show_response_screen(text_emotion):
     messages = [
     {"role": "user", "content": "my dog died, and i feel surprised"},
     ]
-    pipe = pipeline("text-generation", model="Issactoto/therapist")
+    pipe = pipeline("text-generation", model=model1)
     pipe(messages[0]['content'])
 
     try:
@@ -321,5 +321,7 @@ def show_response_screen(text_emotion):
 
     Button(response_frame, text="Exit", font=("Arial", 18, 'bold'), bg='#ffffff', fg='black', command=root.quit).pack(side='bottom', pady=20)
 
-show_startup_screen()
-root.mainloop()
+process_text_emotion("my dog died, but now i dont have to feed anymore")
+
+# show_startup_screen()
+# root.mainloop()
